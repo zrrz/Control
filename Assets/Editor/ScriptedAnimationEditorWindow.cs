@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ScriptedAnimationEditorWindow : EditorWindow {
 
-	List<ScriptedAnimation> scriptedAnimations;
+	ScriptedAnimation[] scriptedAnimations;
 
 	[MenuItem("ScriptedAnimation/Editor")]
 	public static void ShowWindow() {
