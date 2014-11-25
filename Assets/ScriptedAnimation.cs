@@ -6,11 +6,13 @@ using System.Collections.Generic;
 public class ScriptedAnimation {
 
 	public enum Action {
-		MoveToPoint, LookAt
+		PopTo, MoveToPoint, LookAt, Pause, TurnEuler
 	}
 
 	[SerializeField]
 	public Action action;
 	[SerializeField]
-	public float speed;
+	public float time;
+	[SerializeField]
+	public Vector3 point;
 }

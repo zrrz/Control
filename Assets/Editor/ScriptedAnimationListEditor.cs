@@ -12,6 +12,8 @@ public class ScriptedAnimationListEditor : Editor {
 		Show(serializedObject.FindProperty("scriptedAnimations"));
 
 		serializedObject.ApplyModifiedProperties ();
+
+		Repaint ();
 	}
 
 	public static void Show(SerializedProperty list) {
@@ -25,13 +27,45 @@ public class ScriptedAnimationListEditor : Editor {
 					SerializedProperty property = list.GetArrayElementAtIndex(i);
 
 					SerializedProperty action = property.FindPropertyRelative("action"); 
-					action.enumValueIndex = (int)(ScriptedAnimation.Action)EditorGUILayout.EnumPopup((ScriptedAnimation.Action)action.enumValueIndex, GUILayout.Width(90f));
+					ScriptedAnimation.Action actionEnum = (ScriptedAnimation.Action)EditorGUILayout.EnumPopup((ScriptedAnimation.Action)action.enumValueIndex, GUILayout.Width(90f));
+					action.enumValueIndex = (int)actionEnum;
 
-					SerializedProperty speed = property.FindPropertyRelative("speed");
-					GUILayout.Label("Speed", GUILayout.Width(40f));
-					speed.floatValue = EditorGUILayout.FloatField(speed.floatValue, GUILayout.Width(80f));
+					bool showTime = false, showVec3 = false;
+
+					switch (actionEnum) {
+					case ScriptedAnimation.Action.LookAt:
+						showTime = showVec3 = true;
+						break;
+					case ScriptedAnimation.Action.MoveToPoint:
+						showTime = showVec3 = true;
+						break;
+					case ScriptedAnimation.Action.Pause:
+						showTime = true;
+						break;
+					case ScriptedAnimation.Action.PopTo:
+						break;
+					case ScriptedAnimation.Action.TurnEuler:
+						showTime = showVec3 = true;
+						break;
+					default:
+						break;
+					}
+					if(showTime) {
+						SerializedProperty time = property.FindPropertyRelative("time");
+						GUILayout.Label("Time", GUILayout.Width(40f));
+						time.floatValue = EditorGUILayout.FloatField(time.floatValue, GUILayout.Width(80f));
+					}
+					GUILayout.EndHorizontal();
+					if(showVec3) {
+						SerializedProperty point = property.FindPropertyRelative("point");
+						EditorGUI.indentLevel++;
+						GUILayout.BeginHorizontal();
+						EditorGUILayout.LabelField("Point", GUILayout.Width(50f));
+						point.vector3Value = EditorGUILayout.Vector3Field("", point.vector3Value, GUILayout.Width(240f));
+						GUILayout.EndHorizontal();
+						EditorGUI.indentLevel--;
+					}
 				}
-				GUILayout.EndHorizontal();
 			}
 		}
 		if (GUILayout.Button ("New")) {

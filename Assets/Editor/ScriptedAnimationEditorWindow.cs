@@ -14,22 +14,29 @@ public class ScriptedAnimationEditorWindow : EditorWindow {
 
 	void OnGUI() {
 		if(null != scriptedAnimations) {
+			Debug.Log("showing");
 			GUILayout.Label("Events"); 
 			foreach(ScriptedAnimation anim in scriptedAnimations) {
-
 				anim.action = (ScriptedAnimation.Action) EditorGUILayout.EnumPopup("Action", anim.action);
-				anim.speed = EditorGUILayout.FloatField("Speed", anim.speed);
+				anim.time = EditorGUILayout.FloatField("Time", anim.time);
 			}
+
 		} else {
 			GUILayout.Label("No ScriptedAnimationList found");
 		}
 	}
 
 	void OnSelectionChange() {
-		ScriptedAnimationList scriptedAnimationList = Selection.activeGameObject.GetComponent<ScriptedAnimationList> ();
-		if(null != scriptedAnimationList) {
-			scriptedAnimations = scriptedAnimationList.scriptedAnimations;
+		if(null == Selection.activeGameObject) {
+			scriptedAnimations = null;
+			return;
+		}
+		ScriptedAnimationList activeObjList = Selection.activeGameObject.GetComponent<ScriptedAnimationList> ();
+		if (null != activeObjList) {
+			scriptedAnimations = activeObjList.scriptedAnimations;
+			Debug.Log("Found");
 		} else {
+			Debug.Log("Not found");
 			scriptedAnimations = null;
 		}
 		Repaint ();
