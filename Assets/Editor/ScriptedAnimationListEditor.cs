@@ -47,6 +47,9 @@ public class ScriptedAnimationListEditor : Editor {
 					case ScriptedAnimation.Action.TurnEuler:
 						showTime = showVec3 = true;
 						break;
+					case ScriptedAnimation.Action.MoveBy:
+						showTime = showVec3 = true;
+						break;
 					default:
 						break;
 					}

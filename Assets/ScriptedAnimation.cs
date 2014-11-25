@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ScriptedAnimation {
 
 	public enum Action {
-		PopTo, MoveToPoint, LookAt, Pause, TurnEuler
+		PopTo, MoveToPoint, MoveBy, LookAt, TurnEuler, Pause
 	}
 
 	[SerializeField]
