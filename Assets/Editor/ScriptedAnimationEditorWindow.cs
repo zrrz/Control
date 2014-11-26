@@ -15,12 +15,33 @@ public class ScriptedAnimationEditorWindow : EditorWindow {
 	void OnGUI() {
 		if(null != scriptedAnimations) {
 			Debug.Log("showing");
-			GUILayout.Label("Events"); 
+			GUILayout.Label("Events");
 			foreach(ScriptedAnimation anim in scriptedAnimations) {
-				anim.action = (ScriptedAnimation.Action) EditorGUILayout.EnumPopup("Action", anim.action);
-				anim.time = EditorGUILayout.FloatField("Time", anim.time);
-			}
+				GUILayout.BeginHorizontal();
+					if( GUILayout.Button("-", EditorStyles.toolbarButton, GUILayout.ExpandWidth(false)) ) {
+						//TODO Send message to inspector window to use demon magic to delete from the list
+					}
+					anim.action = (ScriptedAnimation.Action) EditorGUILayout.EnumPopup("Action", anim.action);
+					anim.time = EditorGUILayout.FloatField("Time", anim.time);
+				GUILayout.EndHorizontal();
 
+				switch( anim.action )
+				{
+				case ScriptedAnimation.Action.TurnEuler:
+				case ScriptedAnimation.Action.MoveToPoint:
+				case ScriptedAnimation.Action.PopTo:
+				case ScriptedAnimation.Action.MoveBy:
+				case ScriptedAnimation.Action.LookAt:
+					anim.point = EditorGUILayout.Vector3Field( "Point", anim.point );
+					break;
+				case ScriptedAnimation.Action.Pause:
+					break;
+				}
+			}
+		
+			if( GUILayout.Button( "Add new", EditorStyles.toolbarButton, GUILayout.ExpandWidth( false ) ) ) {
+				//TODO Demon magic that creates another ScriptedAnimation
+			}
 		} else {
 			GUILayout.Label("No ScriptedAnimationList found");
 		}
